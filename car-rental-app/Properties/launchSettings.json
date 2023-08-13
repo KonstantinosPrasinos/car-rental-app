@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "car-rental-app (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "car-rental-app (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
