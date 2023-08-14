@@ -8,7 +8,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Left column for buttons -->
+            <ColumnDefinition Width="*"/>
+            <!-- Right column for frame -->
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="RentedCarsStackPanel" Grid.Column="0">
+            <TextBlock x:Name="navigation" Text="Navigation" Margin="16" Style="{StaticResource TitleTextBlockStyle}"/>
+            <TextBlock Text="Testing" />
+            <Button Click="AddCar">Add car</Button>
+        </StackPanel>
+        <Frame x:Name="ContentFrame" Grid.Column="1"/>
+    </Grid>
 </Window>
