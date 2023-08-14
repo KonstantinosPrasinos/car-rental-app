@@ -9,7 +9,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid
+    CornerRadius="8"
+    Padding="12"
+    BorderThickness="1"
+    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+        <TextBlock Text="Hello There general kenobi"/>
     </Grid>
 </Page>

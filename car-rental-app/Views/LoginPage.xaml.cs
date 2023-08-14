@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using car_rental_app.Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +27,20 @@ namespace car_rental_app.Views
         public LoginPage()
         {
             this.InitializeComponent();
+        }
+
+        private void LoginButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Add user validation
+            User user = User.Instance;
+            user.Username = "ConstantDeenos";
+
+            Frame.Navigate(typeof(ViewCarsPage));
+        }
+
+        private void RegisterButtonClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(RegisterPage));
         }
     }
 }

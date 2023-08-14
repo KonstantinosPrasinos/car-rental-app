@@ -27,5 +27,16 @@ namespace car_rental_app.Views
         {
             this.InitializeComponent();
         }
+
+        private void LoginButtonClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(LoginPage));
+        }
+
+        private void RegisterButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Add user validation
+            Frame.Navigate(typeof(LoginPage));
+        }
     }
 }

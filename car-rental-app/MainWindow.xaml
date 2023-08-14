@@ -11,13 +11,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <!-- Left column for buttons -->
             <ColumnDefinition Width="*"/>
-            <!-- Right column for frame -->
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="RentedCarsStackPanel" Grid.Column="0">
-            <TextBlock x:Name="navigation" Text="Navigation" Margin="16" Style="{StaticResource TitleTextBlockStyle}"/>
-            <TextBlock Text="Testing" />
+        <StackPanel x:Name="RentedCarsStackPanel" Grid.Column="0" Visibility="Collapsed">
             <Button Click="AddCar">Add car</Button>
         </StackPanel>
         <Frame x:Name="ContentFrame" Grid.Column="1"/>

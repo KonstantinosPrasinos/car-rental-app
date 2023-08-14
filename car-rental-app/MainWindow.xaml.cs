@@ -12,6 +12,9 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using car_rental_app.Views;
+using car_rental_app.Data;
+using Microsoft.UI.Composition.SystemBackdrops;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,7 +30,13 @@ namespace car_rental_app
         public MainWindow()
         {
             this.InitializeComponent();
-            ContentFrame.Navigate(typeof(MainPage));
+
+            // Settings
+            ExtendsContentIntoTitleBar = true;
+            SystemBackdrop = new MicaBackdrop() { Kind = MicaKind.Base };
+
+            User.Instance.OnUsernameChanged += User_UsernameChanged;
+            ContentFrame.Navigate(typeof(LoginPage));
         }
 
         public void AddCar(object sender, RoutedEventArgs e)
@@ -56,7 +65,16 @@ namespace car_rental_app
 
         private void ChangeReservation(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(Page2));
+            ContentFrame.Navigate(typeof(ChangeReservation));
+        }
+
+        private void User_UsernameChanged(object sender, EventArgs e)
+        {
+            User user = User.Instance;
+            if (user.Username != null)
+            {
+                RentedCarsStackPanel.Visibility = Visibility.Visible;
+            }
         }
     }
 }

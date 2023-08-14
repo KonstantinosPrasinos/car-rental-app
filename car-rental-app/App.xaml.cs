@@ -43,6 +43,8 @@ namespace car_rental_app
         {
             m_window = new MainWindow();
 
+            m_window.Title = "Car rental app";
+
             m_window.Activate();
         }
 

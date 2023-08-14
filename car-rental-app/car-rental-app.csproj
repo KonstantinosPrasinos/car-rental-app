@@ -15,12 +15,12 @@
     <None Remove="MainPage.xaml" />
     <None Remove="MainWindow.xaml" />
     <None Remove="NavigationPanelUserControl.xaml" />
-    <None Remove="Page2.xaml" />
     <None Remove="Views\AddCarPage.xaml" />
     <None Remove="Views\ChangeReservation.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
     <None Remove="Views\ReservationPage.xaml" />
+    <None Remove="Views\ViewCarsPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,17 +48,17 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\ViewCarsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="NavigationPanelUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Page2.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -91,9 +91,6 @@
     <Page Update="Views\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UserControls\" />
   </ItemGroup>
 
   <!-- 
