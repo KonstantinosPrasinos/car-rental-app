@@ -24,17 +24,6 @@ namespace car_rental_app.Views
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     
-    public class CarViewModel
-    {
-        private ObservableCollection<Car> cars = new ObservableCollection<Car>();
-        public ObservableCollection<Car> Cars { get { return cars; } }
-
-        public CarViewModel()
-        {
-            cars.Add(new Car("Car1"));
-            cars.Add(new Car("Car2"));
-        }
-    }
     public sealed partial class ViewCarsPage : Page
     {
         ObservableCollection<Car> cars = new ObservableCollection<Car>();
@@ -42,13 +31,22 @@ namespace car_rental_app.Views
         public ViewCarsPage()
         {
             this.InitializeComponent();
-            cars.Add(new Car("Car1"));
-            cars.Add(new Car("Car2"));
+            cars.Add(new Car("0", "Toyota Yaris", "Small", "Automatic", "Petrol", 70.0, 5));
+            cars.Add(new Car("1", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
+            cars.Add(new Car("2", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
+            cars.Add(new Car("3", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
+            cars.Add(new Car("4", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
+            cars.Add(new Car("5", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
         }
 
-        private void ClickMoment(object sender, RoutedEventArgs e)
+        private void ReserveClick(object sender, RoutedEventArgs e)
         {
-            cars.Add(new Car("Car3"));
+            if (sender is HyperlinkButton hyperlinkButton)
+            {
+                string carId = hyperlinkButton.Tag as string;
+
+                Frame.Navigate(typeof(ReservationPage), carId);
+            }
         }
     }
 }

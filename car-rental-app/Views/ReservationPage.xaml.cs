@@ -27,5 +27,17 @@ namespace car_rental_app.Views
         {
             this.InitializeComponent();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter != null)
+            {
+                string carId = e.Parameter as string;
+
+                TempTextBlock.Text = carId;
+            }
+        }
     }
 }
