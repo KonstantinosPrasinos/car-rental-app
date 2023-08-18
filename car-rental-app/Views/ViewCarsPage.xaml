@@ -8,8 +8,24 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid>
-        <TextBlock Text="This is the view cars page" />
-    </Grid>
+    <ItemsControl x:Name="tStack" ItemsSource="{x:Bind cars}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <VariableSizedWrapGrid Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Grid.Row="1" Grid.Column="1" Spacing="24"
+                    CornerRadius="8"
+                    Padding="24"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    Margin="24">
+                    <TextBlock Text="{Binding Title}" />
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </Page>

@@ -32,7 +32,7 @@ namespace car_rental_app
             this.InitializeComponent();
 
             // Settings
-            ExtendsContentIntoTitleBar = true;
+            // ExtendsContentIntoTitleBar = true;
             SystemBackdrop = new MicaBackdrop() { Kind = MicaKind.Base };
 
             User.Instance.OnUsernameChanged += User_UsernameChanged;

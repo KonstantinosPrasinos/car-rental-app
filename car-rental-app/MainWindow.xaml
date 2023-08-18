@@ -10,11 +10,15 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="RentedCarsStackPanel" Grid.Column="0" Visibility="Collapsed">
-            <Button Click="AddCar">Add car</Button>
+        <StackPanel
+            x:Name="RentedCarsStackPanel"
+            Grid.Column="0"
+            Visibility="Collapsed"
+            Padding="24">
+            <TextBlock Text="No reservations" />
         </StackPanel>
         <Frame x:Name="ContentFrame" Grid.Column="1"/>
     </Grid>
