@@ -26,7 +26,6 @@ namespace car_rental_app
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        int totalButtons = 0;
         public MainWindow()
         {
             this.InitializeComponent();

@@ -34,13 +34,14 @@
                 Header="Email"
                 PlaceholderText="Email"
                 />
-                <PasswordBox Name="Password" Header="Password" PlaceholderText="Password"/>
-                <PasswordBox Name="RepeatPasswordBox" Header="Repeat Password" PlaceholderText="Repeat Password"/>
+                <PasswordBox Name="PasswordTextBox" Header="Password" PlaceholderText="Password"/>
+                <PasswordBox Name="RepeatPasswordTextBox" Header="Repeat Password" PlaceholderText="Repeat Password"/>
             </StackPanel>
             <Button Click="RegisterButtonClick" HorizontalAlignment="Stretch">Register</Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Already have an account?" VerticalAlignment="Center" />
                 <HyperlinkButton Click="LoginButtonClick" VerticalAlignment="Center">Log in</HyperlinkButton>
+                <TextBlock Name="tempTextBlock" Text="No connection" />
             </StackPanel>
         </StackPanel>
     </Grid>
