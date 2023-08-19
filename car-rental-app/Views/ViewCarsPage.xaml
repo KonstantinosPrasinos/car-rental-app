@@ -7,58 +7,83 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <ScrollViewer>
-        <ItemsControl x:Name="tStack" ItemsSource="{x:Bind cars}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid
-                    CornerRadius="8"
-                    Padding="24"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    Margin="24"
-                    RowSpacing="24"
-                    ColumnSpacing="10"
-                    MinWidth=""
-                    >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" Grid.Row="0" Style="{StaticResource SubtitleTextBlockStyle}" Grid.ColumnSpan="2" TextWrapping="NoWrap"/>
-                        <TextBlock Text="{Binding Size}" Grid.Row="1" Style="{StaticResource BodyStrongTextBlockStyle}" Grid.ColumnSpan="2" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{Binding TransmissionType}" Grid.Row="2" Grid.Column="0" />
-                        <TextBlock Text="{Binding FuelType}" Grid.Row="2" Grid.Column="1" />
+        <StackPanel
+            x:Name="RentedCarsStackPanel"
+            Grid.Column="0"
+            Grid.Row="1"
+            Padding="24">   
+            <TextBlock Text="No reservations" />
+        </StackPanel>
 
-                        <TextBlock Text="{Binding PricePerDay}" Grid.Row="3">
-                            <Run Text="{Binding PricePerDay}" />
-                            <Run Text="$" />
-                        </TextBlock>
-                        <TextBlock Text="{Binding SeatNumber}" Grid.Row="4" />
-                        <HyperlinkButton Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Tag="{Binding Id}" Click="ReserveClick">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Reserve" VerticalAlignment="Center" />
-                                <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </HyperlinkButton>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
+            <TextBlock Text="From:" VerticalAlignment="Center" />
+            <CalendarDatePicker x:Name="fromCalendarPicker" VerticalAlignment="Center" Width="160" />
+            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA62;" Margin="24 0" />
+            <TextBlock Text="To:" VerticalAlignment="Center" />
+            <CalendarDatePicker x:Name="toCalendarPicker" VerticalAlignment="Center" Width="160" />
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <ItemsControl x:Name="tStack" ItemsSource="{x:Bind cars}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VariableSizedWrapGrid Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                CornerRadius="8"
+                Padding="24"
+                BorderThickness="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                Margin="24"
+                RowSpacing="24"
+                ColumnSpacing="10"
+                >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Row="0" Style="{StaticResource SubtitleTextBlockStyle}" Grid.ColumnSpan="2" TextWrapping="NoWrap"/>
+                            <TextBlock Text="{Binding Size}" Grid.Row="1" Style="{StaticResource BodyStrongTextBlockStyle}" Grid.ColumnSpan="2" />
+
+                            <TextBlock Text="{Binding TransmissionType}" Grid.Row="2" Grid.Column="0" />
+                            <TextBlock Text="{Binding FuelType}" Grid.Row="2" Grid.Column="1" />
+
+                            <TextBlock Text="{Binding PricePerDay}" Grid.Row="3">
+                        <Run Text="{Binding PricePerDay}" />
+                        <Run Text="$" />
+                            </TextBlock>
+                            <TextBlock Text="{Binding SeatNumber}" Grid.Row="4" />
+                            <HyperlinkButton Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Tag="{Binding Id}" Click="ReserveClick">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Reserve" VerticalAlignment="Center" />
+                                    <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </HyperlinkButton>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </Page>

@@ -32,14 +32,15 @@ namespace car_rental_app
             this.InitializeComponent();
 
             // Settings
-            // ExtendsContentIntoTitleBar = true;
             SystemBackdrop = new MicaBackdrop() { Kind = MicaKind.Base };
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
 
-            User.Instance.OnUsernameChanged += User_UsernameChanged;
+            // User.Instance.OnUsernameChanged += User_UsernameChanged;
             ContentFrame.Navigate(typeof(LoginPage));
         }
 
-        public void AddCar(object sender, RoutedEventArgs e)
+        /* public void AddCar(object sender, RoutedEventArgs e)
         {
             Button newButton = new Button();
             HyperlinkButton newHyperLinkButton = new HyperlinkButton();
@@ -55,7 +56,7 @@ namespace car_rental_app
             RentedCarsStackPanel.Children.Add(newButton);
 
             totalButtons++;
-        }
+        } */
 
         private void RemoveCar(object sender, RoutedEventArgs e)
         {
@@ -68,13 +69,13 @@ namespace car_rental_app
             ContentFrame.Navigate(typeof(ChangeReservation));
         }
 
-        private void User_UsernameChanged(object sender, EventArgs e)
+        /* private void User_UsernameChanged(object sender, EventArgs e)
         {
             User user = User.Instance;
             if (user.Username != null)
             {
                 RentedCarsStackPanel.Visibility = Visibility.Visible;
             }
-        }
+        } */
     }
 }
