@@ -19,7 +19,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Grid.Column="1" Spacing="24"
+        <StackPanel Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Spacing="24"
                     CornerRadius="8"
                     Padding="24"
                     BorderThickness="1"
@@ -34,13 +34,18 @@
                     Header="Email"
                     PlaceholderText="Email"
                     />
-                <PasswordBox Name="PasswordTextBox" Header="Password" PlaceholderText="Password" KeyDown="PasswordBox_KeyDown"/>
+                <PasswordBox Name="PasswordTextBox" Header="Password" PlaceholderText="Password" KeyDown="PasswordBox_KeyDown" />
+                <TextBlock Name="IncorrectInputTextBlock" Text="Incorrect email or password" Foreground="Red" Visibility="Collapsed" />
             </StackPanel>
-            <Button Click="LoginButtonClick" HorizontalAlignment="Stretch" Name="LoginButton">Log in</Button>
+            <Button Click="LoginButtonClick" HorizontalAlignment="Stretch" Name="LoginButton">
+                <StackPanel>
+                    <ProgressRing IsIndeterminate="True" Name="LoadingRing" Height="20" Width="20" Visibility="Collapsed" />
+                    <TextBlock Text="Log in" Name="LoginTextBlock" />
+                </StackPanel>
+            </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Don't have an account?" VerticalAlignment="Center" />
                 <HyperlinkButton Click="RegisterButtonClick" VerticalAlignment="Center">Register</HyperlinkButton>
-                <TextBlock Name="tempTextBlock" Text="No connection" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -72,27 +72,22 @@ namespace car_rental_app.Views
                         user.IsAdmin = isAdmin;
 
                         // Navigate to ViewCarsPage
-                        return true;
+                        return true; // should be true
                     }
                 }
             }
             catch (Exception ex)
             {
-                tempTextBlock.Text = ex.ToString();
+                Console.WriteLine(ex.Message);
             }
 
             return false;
         }
 
-        private async void LoginButtonClick(object sender, RoutedEventArgs e)
+        private async void StartLogin()
         {
-            ProgressRing progressRing = new ProgressRing();
-            progressRing.IsIndeterminate = true;
-            progressRing.IsActive = true;
-            progressRing.Height = 20;
-            progressRing.Width = 20;
-
-            LoginButton.Content = progressRing;
+            LoginTextBlock.Visibility = Visibility.Collapsed;
+            LoadingRing.Visibility = Visibility.Visible;
             IsLoading = true;
 
             if (await LoginUser())
@@ -102,26 +97,26 @@ namespace car_rental_app.Views
             else
             {
                 // Handle fail to log in
+                IncorrectInputTextBlock.Visibility = Visibility.Visible;
             }
 
-            LoginButton.Content = "Log in";
+            LoginTextBlock.Visibility = Visibility.Visible;
+            LoadingRing.Visibility = Visibility.Collapsed;
             IsLoading = false;
         }
 
-        private async void PasswordBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void LoginButtonClick(object sender, RoutedEventArgs e)
+        {
+            StartLogin();
+        }
+
+        private void PasswordBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)
             {
                 e.Handled = true; // Prevent the "Enter" key from adding a new line
 
-                if (await LoginUser())
-                {
-                    Frame.Navigate(typeof(ViewCarsPage));
-                }
-                else
-                {
-                    // Handle fail to log in
-                }
+                StartLogin();
             }
         }
 
