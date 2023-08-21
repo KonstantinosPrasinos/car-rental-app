@@ -87,45 +87,52 @@ namespace car_rental_app.Views
 
         private async void StartLogin()
         {
-            if (PasswordTextBox.Password.Length == 0 && EmailTextBox.Text.Length == 0)
+            if (!IsLoading)
             {
-                IncorrectInputTextBlock.Text = "The email and password fields are required";
-                IncorrectInputTextBlock.Visibility = Visibility.Visible;
-                return;
-            } else if (PasswordTextBox.Password.Length == 0)
-            {
-                IncorrectInputTextBlock.Text = "The password field is required";
-                IncorrectInputTextBlock.Visibility = Visibility.Visible;
-                return;
-            } else if (EmailTextBox.Text.Length == 0)
-            {
-                IncorrectInputTextBlock.Text = "The email field is required";
-                IncorrectInputTextBlock.Visibility = Visibility.Visible;
-                return;
-            } else if (!Regex.IsMatch(EmailTextBox.Text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")) {
-                IncorrectInputTextBlock.Text = "The email field must be an email";
-                IncorrectInputTextBlock.Visibility = Visibility.Visible;
-                return;
-            }
+                if (PasswordTextBox.Password.Length == 0 && EmailTextBox.Text.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "The email and password fields are required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (PasswordTextBox.Password.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "The password field is required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (EmailTextBox.Text.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "The email field is required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (!Regex.IsMatch(EmailTextBox.Text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+                {
+                    IncorrectInputTextBlock.Text = "The email field must be an email";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
 
-            LoginTextBlock.Visibility = Visibility.Collapsed;
-            LoadingRing.Visibility = Visibility.Visible;
-            IsLoading = true;
+                LoginTextBlock.Visibility = Visibility.Collapsed;
+                LoadingRing.Visibility = Visibility.Visible;
+                IsLoading = true;
 
-            if (await LoginUser())
-            {
-                Frame.Navigate(typeof(ViewCarsPage));
-            }
-            else
-            {
-                // Handle fail to log in
-                IncorrectInputTextBlock.Text = "Incorrect email or password";
-                IncorrectInputTextBlock.Visibility = Visibility.Visible;
-            }
+                if (await LoginUser())
+                {
+                    Frame.Navigate(typeof(ViewCarsPage));
+                }
+                else
+                {
+                    // Handle fail to log in
+                    IncorrectInputTextBlock.Text = "Incorrect email or password";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                }
 
-            LoginTextBlock.Visibility = Visibility.Visible;
-            LoadingRing.Visibility = Visibility.Collapsed;
-            IsLoading = false;
+                LoginTextBlock.Visibility = Visibility.Visible;
+                LoadingRing.Visibility = Visibility.Collapsed;
+                IsLoading = false;
+            }
         }
 
         private void LoginButtonClick(object sender, RoutedEventArgs e)
@@ -141,6 +148,10 @@ namespace car_rental_app.Views
 
                 PasswordTextBox.Focus(FocusState.Programmatic);
             }
+            else
+            {
+                IncorrectInputTextBlock.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void PasswordBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -150,6 +161,10 @@ namespace car_rental_app.Views
                 e.Handled = true; // Prevent the "Enter" key from adding a new line
 
                 StartLogin();
+            }
+            else
+            {
+                IncorrectInputTextBlock.Visibility = Visibility.Collapsed;
             }
         }
 

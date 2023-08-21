@@ -20,6 +20,8 @@ using MySqlConnector;
 using BCrypt.Net;
 using Microsoft.WindowsAppSDK.Runtime.Packages;
 using System.Threading.Tasks;
+using Windows.System;
+using System.Text.RegularExpressions;
 
 namespace car_rental_app.Views
 {
@@ -28,6 +30,7 @@ namespace car_rental_app.Views
     /// </summary>
     public sealed partial class RegisterPage : Page
     {
+        private Boolean IsLoading = false;
         public RegisterPage()
         {
             this.InitializeComponent();
@@ -38,7 +41,7 @@ namespace car_rental_app.Views
             Frame.Navigate(typeof(LoginPage));
         }
 
-        private async Task<Boolean> AddUser()
+        private async Task<Boolean> RegisterUser()
         {
             string email = EmailTextBox.Text;
             string password = PasswordTextBox.Password;
@@ -81,33 +84,106 @@ namespace car_rental_app.Views
             return false;
         }
 
-        private async void RegisterButtonClick(object sender, RoutedEventArgs e)
+        private async void StartRegister()
         {
-            if (EmailTextBox.Text.Length == 0)
+            if (!IsLoading)
             {
-                // Add status text
-                return;
-            }
-            else if (PasswordTextBox.Password.Length == 0)
-            {
-                return;
-            }
-            else if (RepeatPasswordTextBox.Password.Length == 0)
-            {
-                return;
-            }
-            else if (PasswordTextBox.Password != RepeatPasswordTextBox.Password)
-            {
-                return;
-            }
+                if (PasswordTextBox.Password.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "All fields are required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (EmailTextBox.Text.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "All fields are required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                if (RepeatPasswordTextBox.Password.Length == 0)
+                {
+                    IncorrectInputTextBlock.Text = "All fields are required";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (PasswordTextBox.Password != RepeatPasswordTextBox.Password)
+                {
+                    IncorrectInputTextBlock.Text = "Password and repeat password must match";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
+                else if (!Regex.IsMatch(EmailTextBox.Text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+                {
+                    IncorrectInputTextBlock.Text = "The email field must be an email";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                    return;
+                }
 
-            if (await AddUser())
+                RegisterTextBlock.Visibility = Visibility.Collapsed;
+                LoadingRing.Visibility = Visibility.Visible;
+                IsLoading = true;
+
+                if (await RegisterUser())
+                {
+                    Frame.Navigate(typeof(LoginPage));
+                }
+                else
+                {
+                    // Handle fail to log in
+                    IncorrectInputTextBlock.Text = "Incorrect email or password";
+                    IncorrectInputTextBlock.Visibility = Visibility.Visible;
+                }
+
+                RegisterTextBlock.Visibility = Visibility.Visible;
+                LoadingRing.Visibility = Visibility.Collapsed;
+                IsLoading = false;
+            }
+        }
+
+        private void RegisterButtonClick(object sender, RoutedEventArgs e)
+        {
+            StartRegister();
+        }
+
+        private void EmailTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
             {
-                Frame.Navigate(typeof(LoginPage));
+                e.Handled = true; // Prevent the "Enter" key from adding a new line
+
+                PasswordTextBox.Focus(FocusState.Programmatic);
             }
             else
             {
-                // Register failed
+                IncorrectInputTextBlock.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void PasswordBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true; // Prevent the "Enter" key from adding a new line
+
+                RepeatPasswordTextBox.Focus(FocusState.Programmatic);
+            }
+            else
+            {
+                IncorrectInputTextBlock.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void RepeatPasswordBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                e.Handled = true;
+
+                StartRegister();
+            }
+            else
+            {
+                IncorrectInputTextBlock.Visibility = Visibility.Collapsed;
             }
         }
     }
