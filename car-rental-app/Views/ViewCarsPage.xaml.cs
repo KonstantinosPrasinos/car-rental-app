@@ -38,7 +38,6 @@ namespace car_rental_app.Views
             cars.Add(new Car("4", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
             cars.Add(new Car("5", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
         }
-
         private void ReserveClick(object sender, RoutedEventArgs e)
         {
             if (sender is HyperlinkButton hyperlinkButton)
@@ -46,6 +45,31 @@ namespace car_rental_app.Views
                 string carId = hyperlinkButton.Tag as string;
 
                 Frame.Navigate(typeof(ReservationPage), carId);
+            }
+        }
+
+        private void ToCalendarPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if (FromCalendarPicker.Date != null)
+            {
+                SearchButton.IsEnabled = true;
+            }
+        }
+
+        private void FromCalendarPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if (ToCalendarPicker.Date != null)
+            {
+                SearchButton.IsEnabled = true;
+            }
+        }
+
+        private void SearchButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (ToCalendarPicker.Date != null && FromCalendarPicker.Date != null)
+            {
+                NoDatesSelectedStackPanel.Visibility = Visibility.Collapsed;
+                CarsListScrollViewer.Visibility = Visibility.Visible;
             }
         }
     }

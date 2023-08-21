@@ -26,13 +26,34 @@
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
-            <TextBlock Text="From:" VerticalAlignment="Center" />
-            <CalendarDatePicker x:Name="fromCalendarPicker" VerticalAlignment="Center" Width="160" />
+            <CalendarDatePicker x:Name="FromCalendarPicker" VerticalAlignment="Center" Width="160" PlaceholderText="From:" DateChanged="FromCalendarPicker_DateChanged" />
             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA62;" Margin="24 0" />
-            <TextBlock Text="To:" VerticalAlignment="Center" />
-            <CalendarDatePicker x:Name="toCalendarPicker" VerticalAlignment="Center" Width="160" />
+            <CalendarDatePicker x:Name="ToCalendarPicker" VerticalAlignment="Center" Width="160" PlaceholderText="To:" DateChanged="ToCalendarPicker_DateChanged" />
+            <Button Name="SearchButton" Margin="24 0" IsEnabled="False" Click="SearchButtonClick">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="Search" />
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
+        <Grid
+            Name="NoDatesSelectedStackPanel"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            CornerRadius="8"
+            Padding="24"
+            BorderThickness="1"
+            Height="Auto"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            Margin="24">
+            <TextBlock Text="Select a date range to view the available cars" HorizontalAlignment="Center" />
+        </Grid>
+        
+        <ScrollViewer Name="CarsListScrollViewer" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
             <ItemsControl x:Name="tStack" ItemsSource="{x:Bind cars}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -42,15 +63,15 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid
-                CornerRadius="8"
-                Padding="24"
-                BorderThickness="1"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                Margin="24"
-                RowSpacing="24"
-                ColumnSpacing="10"
-                >
+                            CornerRadius="8"
+                            Padding="24"
+                            BorderThickness="1"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            Margin="24"
+                            RowSpacing="24"
+                            ColumnSpacing="10"
+                            >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
@@ -70,8 +91,8 @@
                             <TextBlock Text="{Binding FuelType}" Grid.Row="2" Grid.Column="1" />
 
                             <TextBlock Text="{Binding PricePerDay}" Grid.Row="3">
-                        <Run Text="{Binding PricePerDay}" />
-                        <Run Text="$" />
+                                <Run Text="{Binding PricePerDay}" />
+                                <Run Text="$" />
                             </TextBlock>
                             <TextBlock Text="{Binding SeatNumber}" Grid.Row="4" />
                             <HyperlinkButton Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Tag="{Binding Id}" Click="ReserveClick">
