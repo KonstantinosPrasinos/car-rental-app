@@ -19,7 +19,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Spacing="24"
+        <StackPanel Grid.Row="1" Grid.Column="1" Spacing="24"
                     CornerRadius="8"
                     Padding="24"
                     BorderThickness="1"
@@ -33,6 +33,7 @@
                     Name="EmailTextBox"
                     Header="Email"
                     PlaceholderText="Email"
+                    KeyDown="EmailTextBox_KeyDown"
                     />
                 <PasswordBox Name="PasswordTextBox" Header="Password" PlaceholderText="Password" KeyDown="PasswordBox_KeyDown" />
                 <TextBlock Name="IncorrectInputTextBlock" Text="Incorrect email or password" Foreground="Red" Visibility="Collapsed" />
