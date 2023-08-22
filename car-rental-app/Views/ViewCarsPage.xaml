@@ -21,20 +21,27 @@
             x:Name="RentedCarsStackPanel"
             Grid.Column="0"
             Grid.Row="1"
-            Padding="24">   
-            <TextBlock Text="No reservations" />
+            Padding="24">
+            <TextBlock Text="No reservations" Style="{StaticResource SubtitleTextBlockStyle}" />
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
-            <CalendarDatePicker x:Name="FromCalendarPicker" VerticalAlignment="Center" Width="160" PlaceholderText="From:" DateChanged="FromCalendarPicker_DateChanged" />
+            <CalendarDatePicker
+                x:Name="FromCalendarPicker"
+                VerticalAlignment="Center"
+                Width="160"
+                PlaceholderText="From:"
+                DateChanged="FromCalendarPicker_DateChanged"
+                />
             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA62;" Margin="24 0" />
-            <CalendarDatePicker x:Name="ToCalendarPicker" VerticalAlignment="Center" Width="160" PlaceholderText="To:" DateChanged="ToCalendarPicker_DateChanged" />
-            <Button Name="SearchButton" Margin="24 0" IsEnabled="False" Click="SearchButtonClick">
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <TextBlock Text="Search" />
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
-                </StackPanel>
-            </Button>
+            <CalendarDatePicker
+                x:Name="ToCalendarPicker"
+                VerticalAlignment="Center"
+                Width="160"
+                PlaceholderText="To:"
+                DateChanged="ToCalendarPicker_DateChanged"
+                IsEnabled="False"
+                />
         </StackPanel>
         <Grid
             Name="NoDatesSelectedStackPanel"
@@ -64,7 +71,7 @@
                     <DataTemplate>
                         <Grid
                             CornerRadius="8"
-                            Padding="24"
+                            Padding="40 24"
                             BorderThickness="1"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -85,16 +92,24 @@
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Name}" Grid.Row="0" Style="{StaticResource SubtitleTextBlockStyle}" Grid.ColumnSpan="2" TextWrapping="NoWrap"/>
-                            <TextBlock Text="{Binding Size}" Grid.Row="1" Style="{StaticResource BodyStrongTextBlockStyle}" Grid.ColumnSpan="2" />
-
-                            <TextBlock Text="{Binding TransmissionType}" Grid.Row="2" Grid.Column="0" />
-                            <TextBlock Text="{Binding FuelType}" Grid.Row="2" Grid.Column="1" />
-
-                            <TextBlock Text="{Binding PricePerDay}" Grid.Row="3">
-                                <Run Text="{Binding PricePerDay}" />
-                                <Run Text="$" />
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource BodyStrongTextBlockStyle}">
+                                <Run Text="{Binding Size}" />
+                                <Run Text=" - " />
+                                <Run Text="{Binding SeatNumber}" />
+                                <Run Text=" seats" />
                             </TextBlock>
-                            <TextBlock Text="{Binding SeatNumber}" Grid.Row="4" />
+
+                            <TextBlock Grid.Row="2" Grid.ColumnSpan="2">
+                                <Run Text="{Binding TransmissionType}" />
+                                <Run Text=" - " />
+                                <Run Text="{Binding FuelType}" />
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="3" Grid.ColumnSpan="2">
+                                <Run Text="Total: " FontSize="12"/>
+                                <Run Text="{Binding PricePerDay}" FontSize="32" />
+                                <Run Text="€" />
+                            </TextBlock>
                             <HyperlinkButton Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Tag="{Binding Id}" Click="ReserveClick">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Reserve" VerticalAlignment="Center" />

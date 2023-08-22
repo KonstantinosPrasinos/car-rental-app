@@ -14,6 +14,9 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using car_rental_app.Data;
 using System.Collections.ObjectModel;
+using Microsoft.WindowsAppSDK.Runtime.Packages;
+using MySqlConnector;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,16 +30,60 @@ namespace car_rental_app.Views
     public sealed partial class ViewCarsPage : Page
     {
         ObservableCollection<Car> cars = new ObservableCollection<Car>();
+        ObservableCollection<Reservation> reservations = new ObservableCollection<Reservation>();
 
         public ViewCarsPage()
         {
             this.InitializeComponent();
-            cars.Add(new Car("0", "Toyota Yaris", "Small", "Automatic", "Petrol", 70.0, 5));
-            cars.Add(new Car("1", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
-            cars.Add(new Car("2", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
-            cars.Add(new Car("3", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
-            cars.Add(new Car("4", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
-            cars.Add(new Car("5", "Toyota Aygo", "Small", "Automatic", "Petrol", 60.0, 4));
+
+            FromCalendarPicker.MinDate = DateTime.Now.AddDays(1);
+            ToCalendarPicker.MinDate = DateTime.Now.AddDays(1);
+        }
+
+        private async Task<Boolean> GetCars()
+        {
+            cars.Clear();
+
+            DateTimeOffset fromDate = (DateTimeOffset)FromCalendarPicker.Date;
+            DateTimeOffset toDate = (DateTimeOffset)ToCalendarPicker.Date;
+
+            TimeSpan dayDifferenceTimeSpan = toDate - fromDate;
+            int differenceInDays = dayDifferenceTimeSpan.Days;
+
+            try
+            {
+                string connectionString = "Server=localhost;Port=3306;Database=car_rental_app;Uid=root;Pwd=;";
+
+                using MySqlConnection connection = new MySqlConnection(connectionString);
+                await connection.OpenAsync();
+
+                string query = "SELECT Distinct Car.*FROM Car LEFT JOIN Reservation ON Car.Id = Reservation.CarId WHERE(Reservation.FromDate IS NULL OR Reservation.FromDate > @ToDate OR Reservation.ToDate< @FromDate) OR (Reservation.FromDate IS NULL OR Reservation.FromDate > @ToDate OR Reservation.ToDate IS NULL) OR (Reservation.FromDate IS NULL OR Reservation.FromDate > @ToDate OR Reservation.FromDate > @ToDate AND Reservation.ToDate< @FromDate) OR (Reservation.FromDate IS NULL OR Reservation.FromDate > @ToDate OR Reservation.FromDate > @ToDate AND Reservation.ToDate IS NULL)";
+                using MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@FromDate", fromDate);
+                command.Parameters.AddWithValue("@ToDate", toDate);
+
+                using MySqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32("Id");
+                    string name = reader.GetString("Name");
+                    string size = reader.GetString("Size");
+                    string transmissionType = reader.GetString("TransmissionType");
+                    string fuelType = reader.GetString("FuelType");
+                    double pricePerDay = reader.GetDouble("PricePerDay");
+                    int seatNumber = reader.GetInt32("SeatNumber");
+
+                    cars.Add(new Car(id, name, size, transmissionType, fuelType, pricePerDay, seatNumber, pricePerDay * differenceInDays));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
         }
         private void ReserveClick(object sender, RoutedEventArgs e)
         {
@@ -48,29 +95,21 @@ namespace car_rental_app.Views
             }
         }
 
-        private void ToCalendarPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        private async void ToCalendarPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-            if (FromCalendarPicker.Date != null)
-            {
-                SearchButton.IsEnabled = true;
-            }
+            // Make cars list visible
+            NoDatesSelectedStackPanel.Visibility = Visibility.Collapsed;
+            CarsListScrollViewer.Visibility = Visibility.Visible;
+
+            await GetCars();
         }
 
         private void FromCalendarPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-            if (ToCalendarPicker.Date != null)
-            {
-                SearchButton.IsEnabled = true;
-            }
-        }
-
-        private void SearchButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (ToCalendarPicker.Date != null && FromCalendarPicker.Date != null)
-            {
-                NoDatesSelectedStackPanel.Visibility = Visibility.Collapsed;
-                CarsListScrollViewer.Visibility = Visibility.Visible;
-            }
+            ToCalendarPicker.IsEnabled = true;
+            ToCalendarPicker.Date = null;
+            ToCalendarPicker.MinDate = (DateTimeOffset)FromCalendarPicker.Date;
+            ToCalendarPicker.IsCalendarOpen = true;
         }
     }
 }

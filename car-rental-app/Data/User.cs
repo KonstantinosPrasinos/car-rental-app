@@ -30,6 +30,10 @@ namespace car_rental_app.Data
         public Boolean IsAdmin { get; set; }
         public int Id { get; set; }
 
+        public string CardNumber { get; set; }
+        public DateTime CardExpirationDate { get; set; }
+        public string CardCVV { get; set; }
+
         // Private constructor to prevent external instantiation
         private User()
         {
