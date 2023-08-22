@@ -9,7 +9,75 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="None" Name="TempTextBlock" />
+    <Grid
+        Padding="24"
+        HorizontalAlignment="Stretch"
+        ColumnSpacing="24"
+        RowSpacing="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            CornerRadius="8"
+            Padding="40 24"
+            BorderThickness="1"
+            RowSpacing="24"
+            ColumnSpacing="24"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Payment method" Style="{StaticResource TitleTextBlockStyle}" />
+
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Header="Card number"
+                HorizontalAlignment="Stretch"
+                PlaceholderText="Card number"/>
+
+            <Grid Grid.Row="2" Grid.Column="0" RowSpacing="8" ColumnSpacing="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Expiration date" Style="{StaticResource BodyTextBlockStyle}" />
+                <NumberBox Grid.Row="1" Grid.Column="0" PlaceholderText="Month" />
+                <NumberBox Grid.Row="1" Grid.Column="1" PlaceholderText="Year" />
+            </Grid>
+
+            <NumberBox Grid.Row="3" Grid.Column="1" Header="Security code" PlaceholderText="SecurityCode" />
+        </Grid>
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            CornerRadius="8"
+            Padding="40 24"
+            BorderThickness="1"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <TextBlock Text="Order Information" />
+            <TextBlock Name="TempTextBlock" Text="None" />
+        </StackPanel>
+        <Button Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">Finallize reservation</Button>
     </Grid>
 </Page>

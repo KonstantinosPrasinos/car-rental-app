@@ -17,13 +17,35 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel
-            x:Name="RentedCarsStackPanel"
+        <ScrollViewer
+            Name="ReservationsListScrollViewer"
             Grid.Column="0"
             Grid.Row="1"
-            Padding="24">
-            <TextBlock Text="No reservations" Style="{StaticResource SubtitleTextBlockStyle}" />
-        </StackPanel>
+            Padding="24 12">
+            <ItemsControl ItemsSource="{x:Bind reservations}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" Spacing="12" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            CornerRadius="8"
+                            Padding="24 12"
+                            BorderThickness="1"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            >
+                            <TextBlock Grid.Column="0" Text="{Binding CarName}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="120" />
+                            <HyperlinkButton Grid.Column="1" Click="ChangeReservationClick">Change</HyperlinkButton>
+                            <Button Grid.Column="2" Click="CancelReservationClick">Cancel</Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
             <CalendarDatePicker
@@ -56,7 +78,7 @@
             Height="Auto"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            Margin="24">
+            Margin="12">
             <TextBlock Text="Select a date range to view the available cars" HorizontalAlignment="Center" />
         </Grid>
         
@@ -75,7 +97,7 @@
                             BorderThickness="1"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            Margin="24"
+                            Margin="12"
                             RowSpacing="24"
                             ColumnSpacing="10"
                             >

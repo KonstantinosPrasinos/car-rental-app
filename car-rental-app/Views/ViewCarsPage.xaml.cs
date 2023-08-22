@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using Microsoft.WindowsAppSDK.Runtime.Packages;
 using MySqlConnector;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,6 +39,39 @@ namespace car_rental_app.Views
 
             FromCalendarPicker.MinDate = DateTime.Now.AddDays(1);
             ToCalendarPicker.MinDate = DateTime.Now.AddDays(1);
+
+            GetReservations();
+        }
+
+        private async void GetReservations()
+        {
+            try
+            {
+                string connectionString = "Server=localhost;Port=3306;Database=car_rental_app;Uid=root;Pwd=;";
+
+                using MySqlConnection connection = new MySqlConnection(connectionString);
+                await connection.OpenAsync();
+
+                string query = "SELECT Car.Name, Reservation.* from Reservation LEFT JOIN car ON car.id = reservation.carid;";
+                using MySqlCommand command = new MySqlCommand(query, connection);
+
+                using MySqlDataReader reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32("Id");
+                    int carId = reader.GetInt32("CarId");
+                    DateTimeOffset fromDate = reader.GetDateTimeOffset("FromDate");
+                    DateTimeOffset toDate = reader.GetDateTimeOffset("ToDate");
+                    string carName = reader.GetString("Name");
+
+                    reservations.Add(new Reservation(id, carId, fromDate, toDate, carName));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private async Task<Boolean> GetCars()
@@ -110,6 +144,16 @@ namespace car_rental_app.Views
             ToCalendarPicker.Date = null;
             ToCalendarPicker.MinDate = (DateTimeOffset)FromCalendarPicker.Date;
             ToCalendarPicker.IsCalendarOpen = true;
+        }
+
+        private void ChangeReservationClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CancelReservationClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
