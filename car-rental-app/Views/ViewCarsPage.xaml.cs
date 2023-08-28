@@ -161,9 +161,62 @@ namespace car_rental_app.Views
 
         }
 
-        private void CancelReservationClick(object sender, RoutedEventArgs e)
+        private async void CancelReservationClick(object sender, RoutedEventArgs e)
         {
+            ContentDialog cancelReservationDialog = new ContentDialog
+            {
+                Title = "Cancel reservation?",
+                Content = "If you cancel this reservation, it is not guarantee that you will be able to make it again. You will be refunded for the amount that was charged. Are you sure you want to cancel it?",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No"
+            };
 
+            cancelReservationDialog.XamlRoot = NoDatesSelectedStackPanel.XamlRoot;
+
+            ContentDialogResult result = await cancelReservationDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                if (sender is Button cancelButton)
+                {
+                    int id = int.Parse(cancelButton.Tag.ToString());
+
+
+                    try
+                    {
+                        string connectionString = "Server=localhost;Port=3306;Database=car_rental_app;Uid=root;Pwd=;";
+
+                        using MySqlConnection connection = new MySqlConnection(connectionString);
+                        await connection.OpenAsync();
+
+                        string query = "DELETE FROM reservation WHERE Id = @ReservationId";
+                        using MySqlCommand command = new MySqlCommand(query, connection);
+
+                        command.Parameters.AddWithValue("@ReservationId", id);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                        if (rowsAffected > 0)
+                        {
+                            Reservation tempReservation = Reservation.Instance.FirstOrDefault(res => res.Id == id);
+
+                            Reservation.Instance.Remove(tempReservation);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No reservation found with the specified ID.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("An error occurred: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                // The user clicked the CloseButton.
+            }
         }
     }
 }
