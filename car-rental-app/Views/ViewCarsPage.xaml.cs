@@ -30,9 +30,6 @@ namespace car_rental_app.Views
     
     public sealed partial class ViewCarsPage : Page
     {
-        ObservableCollection<Car> cars = new ObservableCollection<Car>();
-        ObservableCollection<Reservation> reservations = new ObservableCollection<Reservation>();
-
         public ViewCarsPage()
         {
             this.InitializeComponent();
@@ -40,7 +37,10 @@ namespace car_rental_app.Views
             FromCalendarPicker.MinDate = DateTime.Now.AddDays(1);
             ToCalendarPicker.MinDate = DateTime.Now.AddDays(1);
 
-            GetReservations();
+            if (Reservation.Instance.Count == 0)
+            {
+                GetReservations();
+            }
         }
 
         private async void GetReservations()
@@ -65,7 +65,7 @@ namespace car_rental_app.Views
                     DateTimeOffset toDate = reader.GetDateTimeOffset("ToDate");
                     string carName = reader.GetString("Name");
 
-                    reservations.Add(new Reservation(id, carId, fromDate, toDate, carName));
+                    Reservation.Instance.Add(new Reservation(id, carId, fromDate, toDate, carName));
                 }
             }
             catch (Exception ex)
@@ -76,13 +76,13 @@ namespace car_rental_app.Views
 
         private async Task<Boolean> GetCars()
         {
-            cars.Clear();
+            Car.Instance.Clear();
 
             DateTimeOffset fromDate = (DateTimeOffset)FromCalendarPicker.Date;
             DateTimeOffset toDate = (DateTimeOffset)ToCalendarPicker.Date;
 
             TimeSpan dayDifferenceTimeSpan = toDate - fromDate;
-            int differenceInDays = dayDifferenceTimeSpan.Days;
+            int differenceInDays = dayDifferenceTimeSpan.Days + 1;
 
             try
             {
@@ -109,7 +109,7 @@ namespace car_rental_app.Views
                     double pricePerDay = reader.GetDouble("PricePerDay");
                     int seatNumber = reader.GetInt32("SeatNumber");
 
-                    cars.Add(new Car(id, name, size, transmissionType, fuelType, pricePerDay, seatNumber, pricePerDay * differenceInDays));
+                    Car.Instance.Add(new Car(id, name, size, transmissionType, fuelType, pricePerDay, seatNumber, pricePerDay * differenceInDays));
                 }
             }
             catch (Exception ex)
@@ -123,9 +123,19 @@ namespace car_rental_app.Views
         {
             if (sender is HyperlinkButton hyperlinkButton)
             {
-                string carId = hyperlinkButton.Tag as string;
+                string carId = hyperlinkButton.Tag.ToString();
 
-                Frame.Navigate(typeof(ReservationPage), carId);
+                DateTimeOffset fromDate = (DateTimeOffset)FromCalendarPicker.Date;
+                DateTimeOffset toDate = (DateTimeOffset)ToCalendarPicker.Date;
+
+                TimeSpan dayDifferenceTimeSpan = toDate - fromDate;
+                int differenceInDays = dayDifferenceTimeSpan.Days + 1;
+
+                double carPricePerDay = Car.Instance.First(car => car.Id == int.Parse(carId)).PricePerDay;
+
+                string navigationParameter = carId + "-" + fromDate.ToString() + "-" + toDate.ToString();
+
+                Frame.Navigate(typeof(ReservationPage), navigationParameter);
             }
         }
 
