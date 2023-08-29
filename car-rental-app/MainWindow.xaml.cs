@@ -38,43 +38,5 @@ namespace car_rental_app
             // User.Instance.OnUsernameChanged += User_UsernameChanged;
             ContentFrame.Navigate(typeof(LoginPage));
         }
-
-        /* public void AddCar(object sender, RoutedEventArgs e)
-        {
-            Button newButton = new Button();
-            HyperlinkButton newHyperLinkButton = new HyperlinkButton();
-
-            newButton.Name = $"Button #{totalButtons}";
-            newButton.Content = $"Button #{totalButtons}";
-            newButton.Click += ChangeReservation;
-
-            newHyperLinkButton.Name = $"ChangeButton{totalButtons}";
-            newHyperLinkButton.Content = "Change";
-            newHyperLinkButton.Click += ChangeReservation;
-
-            RentedCarsStackPanel.Children.Add(newButton);
-
-            totalButtons++;
-        } */
-
-        private void RemoveCar(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-            button.Content = "hello";
-        }
-
-        private void ChangeReservation(object sender, RoutedEventArgs e)
-        {
-            ContentFrame.Navigate(typeof(ChangeReservation));
-        }
-
-        /* private void User_UsernameChanged(object sender, EventArgs e)
-        {
-            User user = User.Instance;
-            if (user.Username != null)
-            {
-                RentedCarsStackPanel.Visibility = Visibility.Visible;
-            }
-        } */
     }
 }

@@ -41,7 +41,7 @@
                             Spacing="12"
                             >
                             <TextBlock Grid.Column="0" Text="{Binding CarName}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="120" />
-                            <HyperlinkButton Grid.Column="1" Click="ChangeReservationClick">Change</HyperlinkButton>
+                            <HyperlinkButton Grid.Column="1" Click="ChangeReservationClick" Tag="{Binding Id}">Change</HyperlinkButton>
                             <Button Grid.Column="2" Click="CancelReservationClick" Tag="{Binding Id}">Cancel</Button>
                         </StackPanel>
                     </DataTemplate>

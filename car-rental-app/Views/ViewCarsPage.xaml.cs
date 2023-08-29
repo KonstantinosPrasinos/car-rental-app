@@ -158,7 +158,11 @@ namespace car_rental_app.Views
 
         private void ChangeReservationClick(object sender, RoutedEventArgs e)
         {
-
+            if (sender is HyperlinkButton button)
+            {
+                string reservationId = button.Tag.ToString();
+                Frame.Navigate(typeof(ChangeReservationPage), reservationId);
+            }
         }
 
         private async void CancelReservationClick(object sender, RoutedEventArgs e)
