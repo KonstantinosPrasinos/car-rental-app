@@ -52,8 +52,10 @@ namespace car_rental_app.Views
                 using MySqlConnection connection = new MySqlConnection(connectionString);
                 await connection.OpenAsync();
 
-                string query = "SELECT Car.Name, Reservation.* from Reservation LEFT JOIN car ON car.id = reservation.carid;";
+                string query = "SELECT Car.Name, Reservation.* from Reservation LEFT JOIN car ON car.id = reservation.carid WHERE Reservation.UserId = @UserId;";
                 using MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@UserId", Data.User.Instance.Id);
 
                 using MySqlDataReader reader = await command.ExecuteReaderAsync();
 

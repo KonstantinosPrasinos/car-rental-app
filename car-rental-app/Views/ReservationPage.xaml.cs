@@ -78,10 +78,11 @@ namespace car_rental_app.Views
 
         private async void Finallize_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (CardNumberNumberBox.Text.Length == 12 && (CardExpirationMonthTextBox.Text.Length == 2 || CardExpirationMonthTextBox.Text.Length == 1) && CardExpirationYearTextBox.Text.Length == 2 && CardSecurityCodeTextBox.Text.Length == 3)
+            if (CardNumberNumberBox.Text.Length == 16 && (CardExpirationMonthTextBox.Text.Length == 2 || CardExpirationMonthTextBox.Text.Length == 1) && CardExpirationYearTextBox.Text.Length == 2 && CardSecurityCodeTextBox.Text.Length == 3)
             {
                 try
                 {
+                    // Insert reservation into database
                     string connectionString = "Server=localhost;Port=3306;Database=car_rental_app;Uid=root;Pwd=;";
                     using MySqlConnection connection = new MySqlConnection(connectionString);
                     await connection.OpenAsync();
@@ -89,7 +90,7 @@ namespace car_rental_app.Views
                     string query = "INSERT INTO Reservation (UserId, CarId, FromDate, ToDate) VALUES (@UserId, @CarId, @FromDate, @ToDate)";
                     using MySqlCommand command = new MySqlCommand(query, connection);
 
-                    command.Parameters.AddWithValue("@UserId", 2);
+                    command.Parameters.AddWithValue("@UserId", Data.User.Instance.Id);
                     command.Parameters.AddWithValue("@CarId", carId);
                     command.Parameters.AddWithValue("@FromDate", fromDate);
                     command.Parameters.AddWithValue("@ToDate", toDate);
@@ -98,21 +99,41 @@ namespace car_rental_app.Views
 
                     if (rowsAffected > 0)
                     {
-                        string selectQuery = "SELECT Id FROM Reservation WHERE FromDate = @FromDate AND ToDate = @ToDate AND CarId = @CarId";
-                        using MySqlCommand selectCommand = new MySqlCommand(selectQuery, connection);
+                        // Add credit card information to user class and database]
+                        string updateQuery = "UPDATE User SET CreditCardNumber = @CardNumber, CreditCardExpirationDate = @CardExpirationDate, CreditCardCVV = @CardSecurityCode WHERE Id = @UserId";
+                        using MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
 
-                        selectCommand.Parameters.AddWithValue("@FromDate", fromDate);
-                        selectCommand.Parameters.AddWithValue("@ToDate", toDate);
-                        selectCommand.Parameters.AddWithValue("@CarId", carId);
+                        updateCommand.Parameters.AddWithValue("@CardNumber", CardNumberNumberBox.Text);
+                        updateCommand.Parameters.AddWithValue("@CardExpirationDate", CardExpirationMonthTextBox.Text + "/" + CardExpirationYearTextBox.Text);
+                        updateCommand.Parameters.AddWithValue("@CardSecurityCode", CardSecurityCodeTextBox.Text);
+                        updateCommand.Parameters.AddWithValue("@UserId", Data.User.Instance.Id);
 
-                        using MySqlDataReader reader = await selectCommand.ExecuteReaderAsync();
+                        int updateRowsAffected = updateCommand.ExecuteNonQuery();
 
-                        while (await reader.ReadAsync())
+                        if (updateRowsAffected > 0)
                         {
-                            int id = reader.GetInt32("Id");
-                            Reservation.Instance.Add(new Reservation(id, carId, fromDate, toDate, car.Name));
+                            Data.User.Instance.CardNumber = CardNumberNumberBox.Text;
+                            Data.User.Instance.CardExpirationDate = CardExpirationMonthTextBox.Text + "/" + CardExpirationYearTextBox.Text;
+                            Data.User.Instance.CardCVV = CardSecurityCodeTextBox.Text;
+
+                            // Get id of just made reservation
+                            string selectQuery = "SELECT Id FROM Reservation WHERE FromDate = @FromDate AND ToDate = @ToDate AND CarId = @CarId";
+                            using MySqlCommand selectCommand = new MySqlCommand(selectQuery, connection);
+
+                            selectCommand.Parameters.AddWithValue("@FromDate", fromDate);
+                            selectCommand.Parameters.AddWithValue("@ToDate", toDate);
+                            selectCommand.Parameters.AddWithValue("@CarId", carId);
+
+                            using MySqlDataReader reader = await selectCommand.ExecuteReaderAsync();
+
+                            while (await reader.ReadAsync())
+                            {
+                                int id = reader.GetInt32("Id");
+                                Reservation.Instance.Add(new Reservation(id, carId, fromDate, toDate, car.Name));
+                            }
+
+                            Frame.Navigate(typeof(ViewCarsPage));
                         }
-                        Frame.Navigate(typeof(ViewCarsPage));
                     }
                 }
                 catch (Exception ex)
@@ -139,7 +160,7 @@ namespace car_rental_app.Views
                 }
             }
 
-            if (args.NewText.Length > 12)
+            if (args.NewText.Length > 16)
             {
                 CardExpirationMonthTextBox.Focus(FocusState.Programmatic);
                 args.Cancel = true; // Cancel the text change if it exceeds the maximum length
