@@ -40,6 +40,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock
                 Text="Add a car"
@@ -47,13 +48,17 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 Style="{StaticResource TitleTextBlockStyle}" />
-            <TextBox Header="Name" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" />
+            <TextBox Name="NameTextBox" Header="Name" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" />
             <ComboBox Name="SizeComboBox" Header="Size" ItemsSource="{x:Bind sizes}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" />
             <ComboBox Name="TransmissionTypeComboBox" Header="Transmission Type" ItemsSource="{x:Bind transmissionTypes}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" />
             <ComboBox Name="FuelTypeComboBox" Header="Fuel Type" ItemsSource="{x:Bind fuelTypes}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" />
-            <NumberBox Header="SeatNumber" Minimum="2" Maximum="12" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" />
-            <TextBox Header="Price per day" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
-            <Button Name="AddCarButton" Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">Add car</Button>
+            <NumberBox Name="SeatNumberNumberBox" Header="SeatNumber" Minimum="2" Maximum="12" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" />
+            <TextBox Name="PriceTextBox" Header="Price per day" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
+
+            <TextBlock Name="FailTextBlock" Visibility="Collapsed" Text="Failed to add Car" Foreground="Red" Grid.Row="4" Grid.ColumnSpan="3" />
+            <TextBlock Name="SuccessTextBlock" Visibility="Collapsed" Text="Successfuly added the Car" Foreground="ForestGreen" Grid.Row="4" Grid.ColumnSpan="3" />
+
+            <Button Name="AddCarButton" Grid.Row="5" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Click="AddCarButton_Click">Add car</Button>
         </Grid>
     </Grid>
 </Page>
