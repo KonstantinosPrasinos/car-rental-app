@@ -6,15 +6,54 @@
     xmlns:local="using:car_rental_app.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
-    <Grid
-    CornerRadius="8"
-    Padding="12"
-    BorderThickness="1"
-    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-        <TextBlock Text="Hello There general kenobi"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1"
+            ColumnSpacing="12"
+            RowSpacing="24"
+            CornerRadius="8"
+            Padding="24"
+            BorderThickness="1"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Text="Add a car"
+                HorizontalAlignment="Center"
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBox Header="Name" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" />
+            <ComboBox Name="SizeComboBox" Header="Size" ItemsSource="{x:Bind sizes}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" />
+            <ComboBox Name="TransmissionTypeComboBox" Header="Transmission Type" ItemsSource="{x:Bind transmissionTypes}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" />
+            <ComboBox Name="FuelTypeComboBox" Header="Fuel Type" ItemsSource="{x:Bind fuelTypes}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" />
+            <NumberBox Header="SeatNumber" Minimum="2" Maximum="12" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" />
+            <TextBox Header="Price per day" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
+            <Button Name="AddCarButton" Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">Add car</Button>
+        </Grid>
     </Grid>
 </Page>

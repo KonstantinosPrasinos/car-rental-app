@@ -145,7 +145,14 @@ namespace car_rental_app.Views
 
                 if (await LoginUser())
                 {
-                    Frame.Navigate(typeof(ViewCarsPage));
+                    if (Data.User.Instance.IsAdmin)
+                    {
+                        Frame.Navigate(typeof(AddCarPage));
+                    }
+                    else
+                    {
+                        Frame.Navigate(typeof(ViewCarsPage));
+                    }
                 }
                 else
                 {

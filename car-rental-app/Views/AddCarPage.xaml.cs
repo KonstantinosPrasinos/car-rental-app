@@ -23,8 +23,24 @@ namespace car_rental_app.Views
     /// </summary>
     public sealed partial class AddCarPage : Page
     {
+        List<string> sizes = new List<string>();
+        List<string> transmissionTypes = new List<string>();
+        List<string> fuelTypes = new List<string>();
         public AddCarPage()
         {
+            sizes.Add("Compact");
+            sizes.Add("SUV");
+            sizes.Add("MidSize");
+            sizes.Add("Convertible");
+            sizes.Add("Sedan");
+
+            transmissionTypes.Add("Automatic");
+            transmissionTypes.Add("Manual");
+
+            fuelTypes.Add("Gasoline");
+            fuelTypes.Add("Diesel");
+            fuelTypes.Add("Electric");
+
             this.InitializeComponent();
         }
     }
