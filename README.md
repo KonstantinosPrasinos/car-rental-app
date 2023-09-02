@@ -9,6 +9,7 @@ This WinUI app simulates a car rental experience, allowing users to register, lo
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Screenshots or Demo](#screenshots-or-demo)
+- [Security](#security)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Database Configuration](#database-configuration)
@@ -35,6 +36,9 @@ This WinUI app simulates a car rental experience, allowing users to register, lo
 ## Screenshots or Demo
 
 
+## Security
+
+- User passwords are securely hashed before being stored in the database to ensure data confidentiality and user account safety.
 
 ## Getting Started
 
